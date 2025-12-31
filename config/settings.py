@@ -6,7 +6,7 @@ SECRET_KEY = 'django-insecure-ckbbz1hncr@ziub@f89p6@0$f78p!9!@t76zhe3cm9-e!f4!9-
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']  # Для production укажите конкретный домен
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -83,10 +83,11 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (загруженные пользователем файлы)
 MEDIA_URL = '/media/'
@@ -96,3 +97,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/workouts/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
