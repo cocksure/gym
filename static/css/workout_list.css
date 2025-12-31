@@ -1,0 +1,34 @@
+/* Workout List Specific Styles */
+
+.workout-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.workout-content {
+    flex: 1;
+}
+
+.workout-card .btn {
+    margin-top: auto;
+}
+
+.workout-card .card-header {
+    display: block;
+}
+
+.workout-name-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+.workout-date {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}

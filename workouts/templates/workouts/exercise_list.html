@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Упражнения{% if category %} - {{ category.name }}{% endif %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/exercise_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <!-- Заголовок с кнопкой назад -->
+    <div class="d-flex align-center justify-between mb-3">
+        <div>
+            <h1 class="mb-1">
+                <i class="fas fa-dumbbell"></i>
+                {% if category %}
+                    {{ category.name }}
+                {% else %}
+                    Все упражнения
+                {% endif %}
+            </h1>
+            {% if category and category.description %}
+            <p class="text-muted">{{ category.description }}</p>
+            {% endif %}
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i> К категориям
+        </a>
+    </div>
+
+{#    <!-- Фильтры и поиск (можно добавить позже) -->#}
+{#    <div class="card mb-3">#}
+{#        <div class="d-flex align-center gap-2">#}
+{#            <div style="flex: 1;">#}
+{#            </div>#}
+{#            <span class="exercise-badge">{{ exercises.count }} упражнений</span>#}
+{#        </div>#}
+{#    </div>#}
+
+    <!-- Список упражнений -->
+    {% if exercises %}
+    <div class="grid">
+        {% for exercise in exercises %}
+        <div class="card exercise-card">
+            <!-- Бейдж категории -->
+            {% if not category %}
+            <div class="exercise-badge" style="background: var(--secondary);">
+                <i class="fas fa-tag"></i> {{ exercise.category.name|default:"Без категории" }}
+            </div>
+            {% endif %}
+
+            <!-- Название упражнения -->
+            <h3 class="mb-2 exercise-title" title="{{ exercise.name }}">{{ exercise.name }}</h3>
+
+            <!-- Видео/изображение -->
+            {% with gif=exercise.get_gif %}
+            {% if gif %}
+            <div class="media-container mb-2">
+                {% if '.mp4' in gif or 'video' in gif %}
+                <video class="exercise-media" autoplay loop muted playsinline>
+                    <source src="{{ gif }}" type="video/mp4">
+                    Ваш браузер не поддерживает видео
+                </video>
+                <div class="media-overlay">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                {% else %}
+                <img class="exercise-media" src="{{ gif }}" alt="{{ exercise.name }}">
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="media-placeholder mb-2">
+                <i class="fas fa-video-slash"></i>
+                <p>Нет демонстрации</p>
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <!-- Детали упражнения -->
+            <div class="exercise-details">
+                <div class="d-flex gap-2 mb-2">
+                    {% if exercise.muscle_group %}
+                    <span class="exercise-tag">
+                        <i class="fas fa-muscle"></i> {{ exercise.muscle_group }}
+                    </span>
+                    {% endif %}
+
+                    {% if exercise.difficulty %}
+                    <span class="exercise-tag" style="background:
+                        {% if exercise.difficulty == 'beginner' %}#4cc9f0
+                        {% elif exercise.difficulty == 'intermediate' %}#f8961e
+                        {% elif exercise.difficulty == 'advanced' %}#f72585
+                        {% else %}#6c757d{% endif %};">
+                        <i class="fas fa-signal"></i> {{ exercise.get_difficulty_display|default:"-" }}
+                    </span>
+                    {% endif %}
+                </div>
+
+                <div class="mb-2">
+                    <p class="mb-1"><strong><i class="fas fa-tools"></i> Оборудование:</strong></p>
+                    <p class="exercise-equipment">
+                        {{ exercise.equipment|default:"Не требуется" }}
+                    </p>
+                </div>
+
+                {% if exercise.description %}
+                <div class="mb-2">
+                    <p class="mb-1"><strong><i class="fas fa-align-left"></i> Описание:</strong></p>
+                    <p class="exercise-description">{{ exercise.description|truncatewords:20 }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Пустое состояние -->
+    <div class="empty-state">
+        <i class="fas fa-dumbbell"></i>
+        <h3>Нет упражнений</h3>
+        <p>В этой категории пока нет упражнений</p>
+        <a href="{% url 'home' %}" class="btn btn-primary mt-2">
+            <i class="fas fa-arrow-left"></i> Вернуться
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Модальное окно для деталей упражнения -->
+<div id="exerciseModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalTitle"></h3>
+            <button class="btn btn-icon" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Контент будет заполняться JavaScript -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/exercise_list.js' %}"></script>
+{% endblock %}

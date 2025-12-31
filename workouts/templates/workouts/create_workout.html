@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Новая тренировка{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/create_workout.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="card fade-in" style="max-width: 600px; margin: 0 auto;">
+    <h1 class="mb-2"><i class="fas fa-plus-circle"></i> Новая тренировка</h1>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-calendar"></i> Дата тренировки
+            </label>
+            <input type="date" name="date" id="id_date" class="form-control" required>
+            <small class="form-text">Укажите дату выполнения тренировки</small>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-th-large"></i> Выберите категории упражнений
+            </label>
+            <small class="form-text mb-2" style="display: block;">Название тренировки будет создано автоматически из выбранных категорий</small>
+            <div class="category-checkboxes">
+                {% for category in categories %}
+                <label class="category-checkbox">
+                    <input type="checkbox" name="categories" value="{{ category.id }}">
+                    <span class="checkbox-label">
+                        <i class="fas fa-dumbbell"></i> {{ category.name }}
+                    </span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-sticky-note"></i> Заметки
+            </label>
+            <textarea name="notes" id="id_notes" class="form-control"
+                      rows="4" placeholder="Любые заметки о тренировке..."></textarea>
+        </div>
+
+        <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-check"></i> Создать тренировку
+            </button>
+            <a href="{% url 'workout-list' %}" class="btn btn-outline">
+                <i class="fas fa-times"></i> Отмена
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

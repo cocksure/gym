@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gym Tracker Pro{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="logo">
+                <a href="{% url 'home' %}">
+                    <i class="fas fa-dumbbell"></i>
+                    <span>Gym Tracker Pro</span>
+                </a>
+            </div>
+
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    <i class="fas fa-home"></i> Главная
+                </a></li>
+                <li><a href="{% url 'workout-list' %}" class="{% if request.resolver_match.url_name == 'workout-list' %}active{% endif %}">
+                    <i class="fas fa-calendar-alt"></i> Тренировки
+                </a></li>
+                <li><a href="{% url 'create-workout' %}" class="{% if request.resolver_match.url_name == 'create-workout' %}active{% endif %}">
+                    <i class="fas fa-plus-circle"></i> Новая
+                </a></li>
+                <li class="user-info">
+                    <span class="username"><i class="fas fa-user"></i> {{ user.username }}</span>
+                </li>
+                <li><a href="{% url 'logout' %}" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Выход
+                </a></li>
+                {% else %}
+                <li><a href="{% url 'login' %}">
+                    <i class="fas fa-sign-in-alt"></i> Вход
+                </a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Gym Tracker Pro. Ваш прогресс — наша цель!</p>
+        <p class="mt-1">
+            <small>Тренируйтесь с умом, достигайте большего</small>
+        </p>
+        <p class="mt-2">
+            <small>Created by <a href="https://www.instagram.com/__maxmudov/" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none; font-weight: 600;">Sanjar Maxmudov</a></small>
+        </p>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

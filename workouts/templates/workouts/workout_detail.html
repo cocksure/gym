@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Тренировка {{ workout.date }}{% endblock %}
+
+{% block extra_css %}
+	<link rel="stylesheet" href="{% static 'css/workout_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+	<div class="fade-in">
+		<!-- Header Card -->
+		<div class="card workout-header mb-3">
+			<div class="workout-header-row">
+				<!-- Заголовок слева -->
+				<div class="workout-header-left">
+					{% if workout.name %}
+						<h1>
+							<span class="workout-name">{{ workout.name }}</span>
+							<span class="workout-date-badge">{{ workout.date|date:"d.m.Y" }}</span>
+						</h1>
+					{% else %}
+						<h1>
+							<i class="fas fa-dumbbell"></i>
+							Тренировка
+							<span class="workout-date">{{ workout.date|date:"d.m.Y" }}</span>
+						</h1>
+					{% endif %}
+				</div>
+
+				<!-- Кнопки справа -->
+				<div class="workout-header-right">
+					<div class="workout-actions">
+						<a href="{% url 'workout-list' %}" class="btn btn-outline">
+							<i class="fas fa-arrow-left"></i>
+						</a>
+						<a href="{% url 'add-exercise' workout.pk %}" class="btn btn-success">
+							<i class="fas fa-plus"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			{% if workout.notes %}
+				<div class="workout-notes mt-3">
+					<p><strong><i class="fas fa-note-sticky"></i> Заметки:</strong></p>
+					<p>{{ workout.notes }}</p>
+				</div>
+			{% endif %}
+		</div>
+		<!-- Exercises List -->
+		{% if workout.workout_exercises.all %}
+			<h3 class="mb-3"><i class="fas fa-list-check"></i> Упражнения</h3>
+
+			<div class="exercises-list">
+				{% for item in workout.workout_exercises.all %}
+					<div class="card exercise-card fade-in">
+						<div class="exercise-content">
+							<div class="exercise-number">#{{ forloop.counter }}</div>
+
+							<!-- Заголовок для десктопа -->
+							<h4 class="mb-2 exercise-title-desktop">{{ item.exercise.name }}</h4>
+
+							<!-- Медиа (гифка/видео) -->
+							{% with gif=item.exercise.get_gif %}
+								{% if gif %}
+									<div class="exercise-media-wrapper">
+										{% if '.mp4' in gif or 'video' in gif %}
+											<video autoplay loop muted playsinline class="exercise-media-img">
+												<source src="{{ gif }}" type="video/mp4">
+											</video>
+										{% else %}
+											<img src="{{ gif }}" alt="{{ item.exercise.name }}"
+											     class="exercise-media-img">
+										{% endif %}
+									</div>
+								{% endif %}
+							{% endwith %}
+						</div>
+
+						<div class="exercise-info">
+							<!-- Заголовок для мобильных -->
+							<h4 class="mb-2 exercise-title-mobile">{{ item.exercise.name }}</h4>
+
+							<div class="exercise-stats">
+								<div class="stat-item">
+									<i class="fas fa-layer-group"></i>
+									<span class="stat-number">{{ item.sets }}</span>
+									<span class="stat-text">подходов</span>
+								</div>
+								<div class="stat-item">
+									<i class="fas fa-redo"></i>
+									<span class="stat-number">{{ item.reps }}</span>
+									<span class="stat-text">повторений</span>
+								</div>
+							</div>
+
+							<!-- Веса списком -->
+							<div class="weights-list">
+								<h5 class="weights-list-title"><i class="fas fa-weight-hanging"></i> Веса:</h5>
+								<div class="weights-items">
+									{% for weight in item.get_weights_display %}
+										<span class="weight-item">{{ forloop.counter }}×{{ weight }}кг</span>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		{% else %}
+			<div class="empty-state">
+				<i class="fas fa-running"></i>
+				<h3>Нет упражнений</h3>
+				<p>Добавьте первое упражнение в эту тренировку</p>
+				<a href="{% url 'add-exercise' workout.pk %}" class="btn btn-success mt-2">
+					<i class="fas fa-plus"></i> Добавить упражнение
+				</a>
+			</div>
+		{% endif %}
+	</div>
+{% endblock %}

@@ -1,0 +1,489 @@
+/* Workout Detail Specific Styles */
+
+.workout-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
+}
+
+.workout-title-row h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.workout-date {
+    color: var(--gray);
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.workout-actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.workout-name-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.workout-notes {
+    background: rgba(102, 126, 234, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--primary);
+}
+
+.workout-notes p:last-child {
+    margin: 0.5rem 0 0 0;
+    color: var(--dark);
+}
+
+/* Контейнер для списка упражнений */
+.exercises-list {
+    width: 100%;
+}
+
+/* ДЕСКТОП (как в исходном коде) - СЕТКА */
+@media (min-width: 1200px) {
+    .exercises-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .exercise-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding: 1rem;
+        min-height: 260px; /* Увеличили высоту для большего GIF */
+    }
+
+    .exercise-content {
+        flex: 1;
+        position: relative;
+    }
+
+    .exercise-number {
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+        background: var(--primary);
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.9rem;
+        z-index: 1;
+    }
+
+    .exercise-title-desktop {
+        display: block;
+        margin-bottom: 0.75rem;
+        font-size: 1.1rem;
+        height: 2.2rem;
+        overflow: hidden;
+        padding-right: 1.5rem; /* Чтобы не перекрывалось номером */
+    }
+
+    .exercise-title-mobile {
+        display: none;
+    }
+
+    .exercise-media-wrapper {
+        border-radius: 8px;
+        overflow: hidden;
+        background: var(--gray-light);
+        height: 180px; /* Увеличили высоту GIF */
+        margin-bottom: 0.75rem; /* Уменьшили отступ */
+    }
+
+    .exercise-media-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+
+    .exercise-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+
+    .stat-item {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        padding: 0.5rem;
+        border-radius: 6px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.2rem;
+    }
+
+    .stat-item i {
+        color: var(--primary);
+        font-size: 1rem;
+    }
+
+    .stat-number {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .stat-text {
+        font-size: 0.7rem;
+        color: var(--gray);
+        text-transform: lowercase;
+    }
+
+    /* Weights List Styles */
+    .weights-list {
+        border-top: 1px solid rgba(102, 126, 234, 0.15);
+    }
+
+    .weights-list-title {
+        font-size: 0.8rem;
+        color: var(--gray);
+            font-weight: 500;
+    }
+
+    .weights-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+    }
+
+    .weight-item {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--primary);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+}
+
+/* ПЛАНШЕТ (768px - 1199px) - горизонтальный компактный layout */
+@media (max-width: 1199px) and (min-width: 768px) {
+    .exercise-card {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 1rem;
+        padding: 0.75rem;
+        margin-bottom: 0.75rem;
+        align-items: stretch;
+        min-height: 160px; /* Увеличили высоту для большего GIF */
+    }
+
+    .exercise-content {
+        flex: 0 0 180px; /* Увеличили ширину для GIF */
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .exercise-number {
+        position: absolute;
+        top: -0.5rem;
+        right: -0.5rem;
+        background: var(--primary);
+        color: white;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+        z-index: 1;
+    }
+
+    .exercise-title-desktop {
+        display: none;
+    }
+
+    .exercise-title-mobile {
+        display: block;
+        font-size: 1rem;
+        margin-bottom: 0.2rem;
+        height: 2rem;
+        overflow: hidden;
+        padding-right: 1.2rem; /* Чтобы не перекрывалось номером */
+    }
+
+    .exercise-media-wrapper {
+        border-radius: 6px;
+        overflow: hidden;
+        background: var(--gray-light);
+        flex: 1; /* Занимает всю доступную высоту */
+        min-height: 0; /* Важно для flex */
+    }
+
+    .exercise-media-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .exercise-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Таблица для статистики на планшете */
+    .exercise-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        margin-top: 0; /* Убрали отступ сверху */
+    }
+
+    .stat-item {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        padding: 0.4rem 0.25rem;
+        border-radius: 5px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.2rem; /* Уменьшили промежуток */
+    }
+
+    .stat-item i {
+        color: var(--primary);
+        font-size: 0.85rem;
+    }
+
+    .stat-number {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .stat-text {
+        font-size: 0.65rem;
+        color: var(--gray);
+        text-transform: lowercase;
+    }
+
+    .weights-list-title {
+        font-size: 0.75rem;
+        color: var(--gray);
+        font-weight: 500;
+    }
+
+    .weights-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); /* Немного шире */
+        gap: 0.25rem;
+    }
+
+    .weight-item {
+        text-align: center;
+        padding: 0.2rem 0.3rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        border-radius: 3px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--primary);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+}
+
+/* МОБИЛЬНЫЕ (< 768px) - самый компактный вариант */
+@media (max-width: 767px) {
+    .exercise-card {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        gap: 0.75rem;
+        padding: 0.6rem;
+        align-items: stretch;
+    }
+
+    .exercise-content {
+        flex: 0 0 150px; /* Увеличили ширину для GIF */
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .exercise-number {
+        position: absolute;
+        top: -0.4rem;
+        right: -0.4rem;
+        background: var(--primary);
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.7rem;
+        z-index: 1;
+    }
+
+    .exercise-title-desktop {
+        display: none;
+    }
+
+    .exercise-title-mobile {
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 0.1%;
+        height: 1.8rem;
+        overflow: hidden;
+        line-height: 1.2;
+        padding-right: 1rem; /* Чтобы не перекрывалось номером */
+    }
+
+    .exercise-media-wrapper {
+        border-radius: 5px;
+        overflow: hidden;
+        flex: 1; /* Занимает всю доступную высоту */
+        min-height: 0; /* Важно для flex */
+    }
+
+    .exercise-media-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .exercise-info {
+        flex: 1;
+        /*display: flex;*/
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0.35rem 0; /* Уменьшили вертикальные отступы */
+    }
+
+    /* Супер компактная таблица статистики */
+    .exercise-stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.3rem;
+        margin-bottom: 0.4rem;
+        margin-top: 0; /* Убрали отступ сверху */
+    }
+
+    .stat-item {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        padding: 0.3rem 0.15rem;
+        border-radius: 4px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.1rem; /* Уменьшили промежуток */
+    }
+
+    .stat-item i {
+        color: var(--primary);
+        font-size: 0.75rem;
+    }
+
+    .stat-number {
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: var(--primary);
+    }
+
+    .stat-text {
+        font-size: 0.6rem;
+        color: var(--gray);
+        text-transform: lowercase;
+    }
+
+
+    .weights-list-title {
+        font-size: 0.7rem;
+        color: var(--gray);
+        font-weight: 500;
+    }
+
+    .weights-items {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(55px, 1fr)); /* Немного шире */
+        gap: 0.2rem;
+    }
+
+    .weight-item {
+        text-align: center;
+        padding: 0.15rem 0.2rem;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        border-radius: 3px;
+        font-size: 0.65rem;
+        font-weight: 600;
+        color: var(--primary);
+        border: 1px solid rgba(102, 126, 234, 0.2);
+    }
+}
+
+/* Очень маленькие мобильные (< 400px) */
+@media (max-width: 399px) {
+    .exercise-card {
+        gap: 0.5rem;
+        padding: 0.5rem;
+        min-height: 120px; /* Сохранили высоту */
+    }
+
+    .exercise-content {
+        flex: 0 0 110px; /* Увеличили немного ширину для GIF */
+    }
+
+    .exercise-title-mobile {
+        font-size: 0.85rem;
+        height: 1.6rem;
+        padding-right: 0.8rem;
+    }
+
+    .stat-item {
+        padding: 0.25rem 0.1rem;
+    }
+
+    .stat-item i {
+        font-size: 0.7rem;
+    }
+
+    .stat-number {
+        font-size: 0.8rem;
+    }
+
+    .stat-text {
+        font-size: 0.55rem;
+    }
+
+    .weights-items {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr)); /* Немного шире */
+        gap: 0.15rem;
+    }
+
+    .weight-item {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.15rem;
+    }
+}

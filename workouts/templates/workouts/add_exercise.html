@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Добавить упражнение{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/add_exercise.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div class="card header-compact">
+        <div class="d-flex justify-between align-center">
+            <div>
+                <h2 class="mb-0"><i class="fas fa-plus-circle"></i> Добавить упражнение</h2>
+                <p class="text-muted mb-0"><i class="fas fa-calendar"></i> {{ workout_day.date|date:"d.m.Y" }}{% if workout_day.name %} - {{ workout_day.name }}{% endif %}</p>
+            </div>
+            <a href="{% url 'workout-detail' workout_day.pk %}" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Назад
+            </a>
+        </div>
+    </div>
+
+    <div class="add-exercise-layout">
+        <!-- Список упражнений с GIF -->
+        <div class="exercises-list">
+            <h3 class="mb-2"><i class="fas fa-dumbbell"></i> Выберите упражнение:</h3>
+            {% for category, exercises in exercises_by_category.items %}
+                {% if exercises %}
+                <div class="category-section">
+                    <h4 class="category-title">{{ category.name }}</h4>
+                    <div class="grid">
+                        {% for exercise in exercises %}
+                        {% with gif=exercise.get_gif %}
+                        <div class="card exercise-card exercise-selectable" onclick="selectExercise({{ exercise.id }}, '{{ exercise.name|escapejs }}', '{{ gif|escapejs }}')">
+                            <div class="exercise-media-container">
+                                {% if gif %}
+                                    {% if '.mp4' in gif or 'video' in gif %}
+                                    <video autoplay loop muted playsinline class="exercise-media">
+                                        <source src="{{ gif }}" type="video/mp4">
+                                    </video>
+                                    {% else %}
+                                    <img src="{{ gif }}" alt="{{ exercise.name }}" class="exercise-media">
+                                    {% endif %}
+                                {% else %}
+                                <div class="exercise-placeholder">
+                                    <i class="fas fa-image"></i>
+                                    <p>Нет медиа</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <h4 class="mb-1 exercise-title-compact" title="{{ exercise.name }}">{{ exercise.name }}</h4>
+                            <p class="exercise-equipment"><i class="fas fa-tools"></i> {{ exercise.equipment|default:"Без оборудования" }}</p>
+                        </div>
+                        {% endwith %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <!-- Форма записи -->
+        <div class="form-sidebar">
+            <div class="card sticky-form hidden" id="exercise-form-card">
+                <h3 class="mb-2"><i class="fas fa-edit"></i> Запись упражнения</h3>
+                <div id="selected-exercise" class="selected-preview">
+                    <p class="text-center" style="color: var(--gray);">
+                        <i class="fas fa-hand-pointer"></i><br>
+                        Выберите упражнение из списка
+                    </p>
+                    <h4 id="selected-name" class="hidden"></h4>
+                    <div id="selected-media"></div>
+                </div>
+                <form method="post" id="exercise-form">
+                    {% csrf_token %}
+                    <input type="hidden" name="exercise" id="exercise-id" required>
+
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-layer-group"></i> Подходы:</label>
+                        <input type="number" name="sets" id="id_sets" class="form-control" min="1" value="3" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-redo"></i> Повторения:</label>
+                        <input type="number" name="reps" id="id_reps" class="form-control" min="1" value="10" required>
+                    </div>
+                    <div class="form-group" id="weights-container">
+                        <label class="form-label">
+                            <i class="fas fa-weight-hanging"></i> Вес для каждого подхода (кг):
+                        </label>
+                        <div id="weights-table" class="weights-table">
+                            <!-- Генерируется JavaScript -->
+                        </div>
+                        <small class="form-text">
+                            Укажите вес для каждого подхода. Повторения одинаковые для всех.
+                        </small>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 mb-2">
+                        <i class="fas fa-check"></i> Добавить упражнение
+                    </button>
+                    <a href="{% url 'workout-detail' workout_day.pk %}" class="btn btn-primary w-100">
+                        <i class="fas fa-flag-checkered"></i> Завершить тренировку
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/add_exercise.js' %}"></script>
+{% endblock %}
