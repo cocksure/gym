@@ -4,6 +4,118 @@
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
 }
 
+/* Exercise Type Badges */
+.exercise-type-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.dropset-badge {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+.superset-badge {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+/* Special Card Styling */
+.dropset-card {
+    border-left: 4px solid #ef4444 !important;
+}
+
+.superset-card {
+    border-left: 4px solid #10b981 !important;
+}
+
+/* Superset Group Wrapper */
+.superset-group-wrapper {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.03) 0%, rgba(5, 150, 105, 0.03) 100%);
+    border: 2px solid rgba(16, 185, 129, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.superset-group-header {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.superset-group-header span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-add-to-superset {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.btn-add-to-superset:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.superset-group-wrapper .exercise-card {
+    margin-bottom: 0.75rem;
+}
+
+.superset-group-wrapper .exercise-card:last-child {
+    margin-bottom: 0;
+}
+
+/* Dropset Progression Display */
+.dropset-progression {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+}
+
+.dropset-set {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.08) 100%);
+    border-left: 3px solid #ef4444;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #dc2626;
+}
+
 .workout-title-row h1 {
     display: flex;
     align-items: center;
@@ -51,20 +163,32 @@
     width: 100%;
 }
 
-/* ДЕСКТОП (как в исходном коде) - СЕТКА */
-@media (min-width: 1200px) {
+/* ДЕСКТОП (большие экраны) - СЕТКА 4 КОЛОНКИ */
+@media (min-width: 1024px) {
     .exercises-list {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(4, 1fr);
         gap: 1rem;
+    }
+
+    /* Для обертки суперсета - занимает всю строку */
+    .superset-group-wrapper {
+        grid-column: 1 / -1;
+    }
+
+    /* Внутри суперсета - тоже 4 колонки */
+    .superset-exercises-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.75rem;
     }
 
     .exercise-card {
         display: flex;
         flex-direction: column;
         height: 100%;
-        padding: 1rem;
-        min-height: 260px; /* Увеличили высоту для большего GIF */
+        padding: 0.75rem;
+        min-height: 280px;
     }
 
     .exercise-content {
@@ -78,24 +202,25 @@
         right: -0.5rem;
         background: var(--primary);
         color: white;
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         z-index: 1;
     }
 
     .exercise-title-desktop {
         display: block;
-        margin-bottom: 0.75rem;
-        font-size: 1.1rem;
-        height: 2.2rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        height: 2.4rem;
         overflow: hidden;
-        padding-right: 1.5rem; /* Чтобы не перекрывалось номером */
+        padding-right: 1.5rem;
+        line-height: 1.2;
     }
 
     .exercise-title-mobile {
@@ -106,8 +231,8 @@
         border-radius: 8px;
         overflow: hidden;
         background: var(--gray-light);
-        height: 180px; /* Увеличили высоту GIF */
-        margin-bottom: 0.75rem; /* Уменьшили отступ */
+        height: 140px;
+        margin-bottom: 0.5rem;
     }
 
     .exercise-media-img {
@@ -116,37 +241,37 @@
         object-fit: cover;
     }
 
-
     .exercise-stats {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
+        gap: 0.4rem;
+        margin-bottom: 0.5rem;
     }
 
     .stat-item {
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-        padding: 0.5rem;
+        padding: 0.4rem 0.2rem;
         border-radius: 6px;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 0.2rem;
+        gap: 0.15rem;
     }
 
     .stat-item i {
         color: var(--primary);
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .stat-number {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 700;
         color: var(--primary);
     }
 
     .stat-text {
-        font-size: 0.7rem;
+        font-size: 0.65rem;
         color: var(--gray);
         text-transform: lowercase;
     }
@@ -154,35 +279,47 @@
     /* Weights List Styles */
     .weights-list {
         border-top: 1px solid rgba(102, 126, 234, 0.15);
+        padding-top: 0.4rem;
     }
 
     .weights-list-title {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         color: var(--gray);
-            font-weight: 500;
+        font-weight: 500;
+        margin-bottom: 0.3rem;
     }
 
     .weights-items {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.3rem;
+        gap: 0.25rem;
     }
 
     .weight-item {
         display: inline-flex;
         align-items: center;
-        padding: 0.25rem 0.5rem;
+        padding: 0.2rem 0.4rem;
         background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
         border-radius: 4px;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-weight: 600;
         color: var(--primary);
         border: 1px solid rgba(102, 126, 234, 0.2);
     }
+
+    /* Дроп-сет прогрессия */
+    .dropset-progression {
+        gap: 0.3rem;
+    }
+
+    .dropset-set {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.7rem;
+    }
 }
 
-/* ПЛАНШЕТ (768px - 1199px) - горизонтальный компактный layout */
-@media (max-width: 1199px) and (min-width: 768px) {
+/* ПЛАНШЕТ (768px - 1023px) - горизонтальный компактный layout */
+@media (max-width: 1023px) and (min-width: 768px) {
     .exercise-card {
         display: flex;
         flex-direction: row;

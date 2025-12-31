@@ -75,6 +75,33 @@
                 <form method="post" id="exercise-form">
                     {% csrf_token %}
                     <input type="hidden" name="exercise" id="exercise-id" required>
+                    {% if superset_group %}
+                        <input type="hidden" name="superset_group" value="{{ superset_group }}">
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label class="form-label"><i class="fas fa-fire"></i> Тип упражнения:</label>
+                        {% if superset_group %}
+                            <select name="exercise_type" id="exercise_type" class="form-control" disabled>
+                                <option value="SUPERSET" selected>Суперсет (добавление в группу)</option>
+                            </select>
+                            <input type="hidden" name="exercise_type" value="SUPERSET">
+                            <small class="form-text" style="color: #10b981;">
+                                <i class="fas fa-bolt"></i> Добавление упражнения в существующий суперсет
+                            </small>
+                        {% else %}
+                            <select name="exercise_type" id="exercise_type" class="form-control">
+                                <option value="NORMAL">Обычное</option>
+                                <option value="DROPSET">Дроп-сет</option>
+                                <option value="SUPERSET">Суперсет</option>
+                            </select>
+                            <small class="form-text">
+                                <strong>Обычное:</strong> стандартные подходы<br>
+                                <strong>Дроп-сет:</strong> снижение веса в одном подходе<br>
+                                <strong>Суперсет:</strong> несколько упражнений подряд
+                            </small>
+                        {% endif %}
+                    </div>
 
                     <div class="form-group">
                         <label class="form-label"><i class="fas fa-layer-group"></i> Подходы:</label>

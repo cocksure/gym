@@ -4,56 +4,56 @@
 {% block title %}Категории упражнений{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/category_list.css' %}">
+	<link rel="stylesheet" href="{% static 'css/category_list.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="card fade-in">
-    <h1 class="">Категории</h1>
-    <p>Выберите категорию, чтобы увидеть упражнения</p>
+	<div class="card fade-in">
+		<h1 class="">Категории</h1>
+		<p>Выберите категорию, чтобы увидеть упражнения</p>
 
-    <div class="mb-2">
-        <a href="{% url 'workout-list' %}" class="btn btn-primary">
-            <i class="fas fa-dumbbell"></i> Мои тренировки
-        </a>
-    </div>
+		<div class="mb-2 mt-2">
+			<a href="{% url 'workout-list' %}" class="btn btn-primary w-100">
+				<i class="fas fa-dumbbell"></i> Мои тренировки
+			</a>
+		</div>
 
-    <div class="category-list-grid">
-        {% for category in categories %}
-        <div class="category-card">
-            <div class="card-header">
-                <h3>{{ category.name }}</h3>
-                <span class="category-icon">
+		<div class="category-list-grid">
+			{% for category in categories %}
+				<div class="category-card">
+					<div class="card-header">
+						<h3>{{ category.name }}</h3>
+						<span class="category-icon">
                     {% if 'груд' in category.name|lower or 'chest' in category.slug|lower %}
-                        <i class="fas fa-heart"></i>
+	                    <i class="fas fa-heart"></i>
                     {% elif 'спин' in category.name|lower or 'back' in category.slug|lower %}
-                        <i class="fas fa-user"></i>
+	                    <i class="fas fa-user"></i>
                     {% elif 'ног' in category.name|lower or 'leg' in category.slug|lower %}
-                        <i class="fas fa-shoe-prints"></i>
+	                    <i class="fas fa-shoe-prints"></i>
                     {% elif 'рук' in category.name|lower or 'бицепс' in category.name|lower or 'трицепс' in category.name|lower or 'arm' in category.slug|lower %}
-                        <i class="fas fa-hand-fist"></i>
+	                    <i class="fas fa-hand-fist"></i>
                     {% elif 'плеч' in category.name|lower or 'shoulder' in category.slug|lower %}
-                        <i class="fas fa-up-long"></i>
+	                    <i class="fas fa-up-long"></i>
                     {% elif 'прес' in category.name|lower or 'корпус' in category.name|lower or 'abs' in category.slug|lower or 'core' in category.slug|lower %}
-                        <i class="fas fa-circle-dot"></i>
+	                    <i class="fas fa-circle-dot"></i>
                     {% elif 'кардио' in category.name|lower or 'cardio' in category.slug|lower %}
-                        <i class="fas fa-heart-pulse"></i>
+	                    <i class="fas fa-heart-pulse"></i>
                     {% else %}
-                        <i class="fas fa-dumbbell"></i>
+	                    <i class="fas fa-dumbbell"></i>
                     {% endif %}
                 </span>
-            </div>
-            <a href="{% url 'exercise-list' category.slug %}" class="btn btn-primary w-100">
-                <i class="fas fa-arrow-right"></i> Смотреть упражнения
-            </a>
-        </div>
-        {% empty %}
-        <div class="empty-state">
-            <i class="fas fa-folder-open"></i>
-            <h3>Нет категорий</h3>
-            <p>Категории упражнений пока не добавлены</p>
-        </div>
-        {% endfor %}
-    </div>
-</div>
+					</div>
+					<a href="{% url 'exercise-list' category.slug %}" class="btn btn-primary w-100">
+						<i class="fas fa-arrow-right"></i> Смотреть упражнения
+					</a>
+				</div>
+			{% empty %}
+				<div class="empty-state">
+					<i class="fas fa-folder-open"></i>
+					<h3>Нет категорий</h3>
+					<p>Категории упражнений пока не добавлены</p>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}

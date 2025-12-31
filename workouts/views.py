@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db import models
 from exercises.models import ExerciseCategory, Exercise
 from .models import WorkoutDay, WorkoutExercise
 
@@ -58,32 +59,107 @@ class WorkoutDayDetailView(LoginRequiredMixin, DetailView):
 def add_workout_exercise(request, pk):
     workout_day = get_object_or_404(WorkoutDay, pk=pk, user=request.user)
 
+    # Проверяем, добавляем ли в существующий суперсет
+    superset_group_param = request.GET.get('superset_group') or request.POST.get('superset_group')
+
     if request.method == 'POST':
         exercise_id = request.POST.get('exercise')
         sets = request.POST.get('sets')
         reps = request.POST.get('reps')
+        exercise_type = request.POST.get('exercise_type', 'NORMAL')
 
-        # Получаем массив весов (weight_1, weight_2, ...)
-        weights = []
-        for i in range(1, int(sets) + 1):
-            weight_value = request.POST.get(f'weight_{i}')
-            if weight_value:
-                weights.append(float(weight_value))
+        exercise = get_object_or_404(Exercise, pk=exercise_id)
 
-        if exercise_id and sets and reps and len(weights) == int(sets):
-            exercise = get_object_or_404(Exercise, pk=exercise_id)
+        # Определяем порядок упражнения
+        last_order = workout_day.workout_exercises.aggregate(
+            max_order=models.Max('order')
+        )['max_order'] or 0
+        new_order = last_order + 1
 
-            # Среднее значение для поля weight (совместимость)
-            avg_weight = sum(weights) / len(weights) if weights else 0
+        # Обработка в зависимости от типа упражнения
+        if exercise_type == 'DROPSET':
+            # Дроп-сет: парсим веса через запятую
+            dropset_weights = []
+            for i in range(1, int(sets) + 1):
+                dropset_input = request.POST.get(f'dropset_{i}')
+                if dropset_input:
+                    # Парсим строку "10, 5, 2.5" -> [10.0, 5.0, 2.5]
+                    set_weights = [float(w.strip()) for w in dropset_input.split(',')]
+                    dropset_weights.append(set_weights)
 
-            WorkoutExercise.objects.create(
-                workout_day=workout_day,
-                exercise=exercise,
-                sets=sets,
-                reps=reps,
-                weight=avg_weight,
-                weights=weights  # Новый массив
-            )
+            if dropset_weights and len(dropset_weights) == int(sets):
+                # Среднее значение всех весов для совместимости
+                all_weights = [w for set_w in dropset_weights for w in set_w]
+                avg_weight = sum(all_weights) / len(all_weights) if all_weights else 0
+
+                WorkoutExercise.objects.create(
+                    workout_day=workout_day,
+                    exercise=exercise,
+                    sets=sets,
+                    reps=reps,
+                    weight=avg_weight,
+                    weights=None,
+                    exercise_type='DROPSET',
+                    dropset_weights=dropset_weights,
+                    order=new_order
+                )
+
+        elif exercise_type == 'SUPERSET':
+            # Суперсет: получаем или создаем номер группы
+            if superset_group_param:
+                # Добавляем к существующему суперсету
+                superset_group = int(superset_group_param)
+            else:
+                # Создаем новый суперсет
+                last_superset = workout_day.workout_exercises.filter(
+                    exercise_type='SUPERSET'
+                ).aggregate(max_group=models.Max('superset_group'))['max_group']
+                superset_group = (last_superset or 0) + 1
+
+            # Получаем обычные веса
+            weights = []
+            for i in range(1, int(sets) + 1):
+                weight_value = request.POST.get(f'weight_{i}')
+                if weight_value:
+                    weights.append(float(weight_value))
+
+            if len(weights) == int(sets):
+                avg_weight = sum(weights) / len(weights) if weights else 0
+
+                WorkoutExercise.objects.create(
+                    workout_day=workout_day,
+                    exercise=exercise,
+                    sets=sets,
+                    reps=reps,
+                    weight=avg_weight,
+                    weights=weights,
+                    exercise_type='SUPERSET',
+                    superset_group=superset_group,
+                    order=new_order
+                )
+
+        else:
+            # Обычное упражнение
+            weights = []
+            for i in range(1, int(sets) + 1):
+                weight_value = request.POST.get(f'weight_{i}')
+                if weight_value:
+                    weights.append(float(weight_value))
+
+            if len(weights) == int(sets):
+                avg_weight = sum(weights) / len(weights) if weights else 0
+
+                WorkoutExercise.objects.create(
+                    workout_day=workout_day,
+                    exercise=exercise,
+                    sets=sets,
+                    reps=reps,
+                    weight=avg_weight,
+                    weights=weights,
+                    exercise_type='NORMAL',
+                    order=new_order
+                )
+
         return redirect('workout-detail', pk=pk)
 
     # Фильтруем упражнения по выбранным категориям тренировки
@@ -99,7 +175,8 @@ def add_workout_exercise(request, pk):
 
     return render(request, 'workouts/add_exercise.html', {
         'workout_day': workout_day,
-        'exercises_by_category': exercises_by_category
+        'exercises_by_category': exercises_by_category,
+        'superset_group': superset_group_param
     })
 
 

@@ -22,16 +22,23 @@
 
 .add-exercise-layout {
     display: grid;
-    grid-template-columns: 1fr 400px;
+    grid-template-columns: 1fr 420px;
     gap: 2rem;
     margin-top: 1rem;
+    align-items: start;
+}
+
+.exercises-list {
+    overflow-y: visible;
 }
 
 .category-section {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .category-section .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     margin: 0.75rem 0;
 }
@@ -123,11 +130,36 @@
 
 .form-sidebar {
     position: relative;
+    height: fit-content;
+    margin-top: 96px;
 }
 
 .sticky-form {
     position: sticky;
-    top: 90px;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary) rgba(102, 126, 234, 0.1);
+}
+
+.sticky-form::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sticky-form::-webkit-scrollbar-track {
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 10px;
+}
+
+.sticky-form::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 10px;
+}
+
+.sticky-form::-webkit-scrollbar-thumb:hover {
+    background: #5a6fd8;
 }
 
 .selected-preview {
@@ -193,8 +225,15 @@
         grid-template-columns: 1fr;
     }
 
+    .category-section .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
     .sticky-form {
         position: static;
+        max-height: none;
+        overflow-y: visible;
     }
 
     .form-sidebar {
@@ -205,5 +244,14 @@
 @media (max-width: 768px) {
     .exercise-media-container {
         height: 150px;
+    }
+
+    .category-section .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .exercise-title-compact {
+        font-size: 0.9rem;
     }
 }
