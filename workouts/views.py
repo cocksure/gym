@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.views.generic import ListView, DetailView, CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
@@ -209,3 +209,78 @@ class CreateWorkoutView(LoginRequiredMixin, CreateView):
         form.save_m2m()
 
         return HttpResponseRedirect(self.get_success_url())
+
+
+@login_required
+def delete_workout_exercise(request, pk):
+    """Удаление упражнения из тренировки"""
+    exercise = get_object_or_404(WorkoutExercise, pk=pk)
+    workout_day = exercise.workout_day
+
+    # Проверка прав доступа
+    if workout_day.user != request.user:
+        return JsonResponse({'error': 'Permission denied'}, status=403)
+
+    if request.method == 'POST':
+        exercise.delete()
+        return JsonResponse({'success': True})
+
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
+
+@login_required
+def edit_workout_exercise(request, pk):
+    """Редактирование упражнения из тренировки"""
+    workout_exercise = get_object_or_404(WorkoutExercise, pk=pk)
+    workout_day = workout_exercise.workout_day
+
+    # Проверка прав доступа
+    if workout_day.user != request.user:
+        raise PermissionDenied
+
+    if request.method == 'POST':
+        sets = request.POST.get('sets')
+        reps = request.POST.get('reps')
+
+        # Обновляем базовые поля
+        workout_exercise.sets = sets
+        workout_exercise.reps = reps
+
+        # Обновляем веса в зависимости от типа упражнения
+        if workout_exercise.exercise_type == 'DROPSET':
+            # Дроп-сет: парсим веса через запятую
+            dropset_weights = []
+            for i in range(1, int(sets) + 1):
+                dropset_input = request.POST.get(f'dropset_{i}')
+                if dropset_input:
+                    set_weights = [float(w.strip()) for w in dropset_input.split(',')]
+                    dropset_weights.append(set_weights)
+
+            if dropset_weights and len(dropset_weights) == int(sets):
+                all_weights = [w for set_w in dropset_weights for w in set_w]
+                avg_weight = sum(all_weights) / len(all_weights) if all_weights else 0
+                workout_exercise.weight = avg_weight
+                workout_exercise.dropset_weights = dropset_weights
+        else:
+            # Обычное упражнение или суперсет
+            weights = []
+            for i in range(1, int(sets) + 1):
+                weight_value = request.POST.get(f'weight_{i}')
+                if weight_value:
+                    weights.append(float(weight_value))
+
+            if len(weights) == int(sets):
+                avg_weight = sum(weights) / len(weights) if weights else 0
+                workout_exercise.weight = avg_weight
+                workout_exercise.weights = weights
+
+        workout_exercise.save()
+        return redirect('workout-detail', pk=workout_day.pk)
+
+    # Используем тот же шаблон что и для добавления, но в режиме редактирования
+    return render(request, 'workouts/add_exercise.html', {
+        'workout_day': workout_day,
+        'editing_exercise': workout_exercise,  # Флаг режима редактирования
+        'exercises_by_category': {},  # Пустой список упражнений
+        'superset_group': None
+    })

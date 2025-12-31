@@ -52,9 +52,13 @@ const setsInput = document.getElementById('id_sets');
 const weightsTable = document.getElementById('weights-table');
 const exerciseTypeSelect = document.getElementById('exercise_type');
 
+// Проверяем режим редактирования
+const isEditing = window.editingExerciseData !== undefined;
+const editData = isEditing ? window.editingExerciseData : null;
+
 function generateWeightsTable() {
     const numSets = parseInt(setsInput.value) || 0;
-    const exerciseType = exerciseTypeSelect ? exerciseTypeSelect.value : 'NORMAL';
+    const exerciseType = isEditing ? editData.type : (exerciseTypeSelect ? exerciseTypeSelect.value : 'NORMAL');
 
     if (numSets === 0) {
         weightsTable.innerHTML = '<p style="color: var(--gray); text-align: center;">Укажите количество подходов</p>';
@@ -70,6 +74,10 @@ function generateWeightsTable() {
         html += '</div>';
 
         for (let i = 1; i <= numSets; i++) {
+            // Получаем текущие веса для этого подхода при редактировании
+            const currentSetWeights = (isEditing && editData.weights[i - 1]) ? editData.weights[i - 1] : [];
+            const weightsValue = currentSetWeights.length > 0 ? currentSetWeights.join(', ') : '';
+
             html += `
                 <div class="weight-row dropset-row">
                     <span class="weight-row-label">Подход ${i}:</span>
@@ -79,6 +87,7 @@ function generateWeightsTable() {
                         id="dropset_${i}"
                         class="form-control dropset-input"
                         placeholder="10, 5, 2.5"
+                        value="${weightsValue}"
                         required
                     >
                     <span class="weight-row-unit">кг</span>
@@ -94,6 +103,9 @@ function generateWeightsTable() {
         }
 
         for (let i = 1; i <= numSets; i++) {
+            // Получаем текущий вес для этого подхода при редактировании
+            const currentWeight = (isEditing && editData.weights[i - 1] !== undefined) ? editData.weights[i - 1] : 0;
+
             html += `
                 <div class="weight-row">
                     <span class="weight-row-label">Подход ${i}:</span>
@@ -104,7 +116,7 @@ function generateWeightsTable() {
                         id="weight_${i}"
                         class="form-control"
                         min="0"
-                        value="0"
+                        value="${currentWeight}"
                         required
                         placeholder="0"
                     >

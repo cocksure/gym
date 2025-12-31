@@ -67,14 +67,95 @@
 							</div>
 							<div class="superset-exercises-grid">
 							{% for item in group.list %}
-								<div class="card exercise-card fade-in superset-card">
-									<div class="exercise-content">
-										<div class="exercise-number">{{ forloop.counter }}</div>
+								<div class="exercise-card-wrapper">
+									<div class="exercise-card-content">
+										<div class="card exercise-card fade-in superset-card">
+											<div class="exercise-content">
+												<div class="exercise-number">{{ forloop.counter }}</div>
 
-										<!-- Бейдж типа упражнения -->
-										<div class="exercise-type-badge superset-badge">
-											<i class="fas fa-bolt"></i> Суперсет
+												<!-- Бейдж типа упражнения -->
+												<div class="exercise-type-badge superset-badge">
+													<i class="fas fa-bolt"></i> Суперсет
+												</div>
+
+												<!-- Заголовок для десктопа -->
+												<h4 class="mb-2 exercise-title-desktop">{{ item.exercise.name }}</h4>
+
+												<!-- Медиа (гифка/видео) -->
+												{% with gif=item.exercise.get_gif %}
+													{% if gif %}
+														<div class="exercise-media-wrapper">
+															{% if '.mp4' in gif or 'video' in gif %}
+																<video autoplay loop muted playsinline class="exercise-media-img">
+																	<source src="{{ gif }}" type="video/mp4">
+																</video>
+															{% else %}
+																<img src="{{ gif }}" alt="{{ item.exercise.name }}"
+																     class="exercise-media-img">
+															{% endif %}
+														</div>
+													{% endif %}
+												{% endwith %}
+											</div>
+
+											<div class="exercise-info">
+												<!-- Заголовок для мобильных -->
+												<h4 class="mb-2 exercise-title-mobile">{{ item.exercise.name }}</h4>
+
+												<div class="exercise-stats">
+													<div class="stat-item">
+														<i class="fas fa-layer-group"></i>
+														<span class="stat-number">{{ item.sets }}</span>
+														<span class="stat-text">подходов</span>
+													</div>
+													<div class="stat-item">
+														<i class="fas fa-redo"></i>
+														<span class="stat-number">{{ item.reps }}</span>
+														<span class="stat-text">повторений</span>
+													</div>
+												</div>
+
+												<!-- Веса -->
+												<div class="weights-list">
+													<h5 class="weights-list-title"><i class="fas fa-weight-hanging"></i> Веса:</h5>
+													<div class="weights-items">
+														{% for weight in item.get_weights_display %}
+															<span class="weight-item">{{ forloop.counter }}×{{ weight|floatformat:"-1" }}кг</span>
+														{% endfor %}
+													</div>
+												</div>
+											</div>
 										</div>
+									</div>
+									<div class="exercise-card-actions">
+										<a href="{% url 'edit-exercise' item.pk %}" class="action-btn btn-edit">
+											<i class="fas fa-edit"></i>
+											<span>Изменить</span>
+										</a>
+										<button onclick="deleteExercise({{ item.pk }}, '{{ item.exercise.name|escapejs }}')" class="action-btn btn-delete">
+											<i class="fas fa-trash"></i>
+											<span>Удалить</span>
+										</button>
+									</div>
+								</div>
+							{% endfor %}
+							</div>
+						</div>
+					{% else %}
+						<!-- Обычные упражнения и дроп-сеты -->
+						{% for item in group.list %}
+							<div class="exercise-card-wrapper">
+								<div class="exercise-card-content">
+									<div class="card exercise-card fade-in {% if item.is_dropset %}dropset-card{% endif %}">
+										<div class="exercise-content">
+											<div class="exercise-number">#{{ forloop.parentloop.counter }}</div>
+
+											<!-- Бейдж типа упражнения -->
+											{% if item.is_dropset %}
+												<div class="exercise-type-badge dropset-badge">
+													<i class="fas fa-fire"></i> Дроп-сет
+												</div>
+											{% endif %}
 
 										<!-- Заголовок для десктопа -->
 										<h4 class="mb-2 exercise-title-desktop">{{ item.exercise.name }}</h4>
@@ -113,93 +194,40 @@
 											</div>
 										</div>
 
-										<!-- Веса -->
-										<div class="weights-list">
-											<h5 class="weights-list-title"><i class="fas fa-weight-hanging"></i> Веса:</h5>
-											<div class="weights-items">
-												{% for weight in item.get_weights_display %}
-													<span class="weight-item">{{ forloop.counter }}×{{ weight|floatformat:"-1" }}кг</span>
-												{% endfor %}
+										<!-- Веса списком -->
+										{% if item.is_dropset %}
+											<!-- Дроп-сет: показываем прогрессию весов -->
+											<div class="weights-list">
+												<h5 class="weights-list-title"><i class="fas fa-fire"></i> Дроп-сет прогрессия:</h5>
+												<div class="dropset-progression">
+													{% for set_info in item.get_dropset_display %}
+														<div class="dropset-set">{{ set_info }}</div>
+													{% endfor %}
+												</div>
 											</div>
-										</div>
+										{% else %}
+											<!-- Обычное упражнение: обычные веса -->
+											<div class="weights-list">
+												<h5 class="weights-list-title"><i class="fas fa-weight-hanging"></i> Веса:</h5>
+												<div class="weights-items">
+													{% for weight in item.get_weights_display %}
+														<span class="weight-item">{{ forloop.counter }}×{{ weight|floatformat:"-1" }}кг</span>
+													{% endfor %}
+												</div>
+											</div>
+										{% endif %}
 									</div>
 								</div>
-							{% endfor %}
 							</div>
-						</div>
-					{% else %}
-						<!-- Обычные упражнения и дроп-сеты -->
-						{% for item in group.list %}
-							<div class="card exercise-card fade-in {% if item.is_dropset %}dropset-card{% endif %}">
-								<div class="exercise-content">
-									<div class="exercise-number">#{{ forloop.parentloop.counter }}</div>
-
-									<!-- Бейдж типа упражнения -->
-									{% if item.is_dropset %}
-										<div class="exercise-type-badge dropset-badge">
-											<i class="fas fa-fire"></i> Дроп-сет
-										</div>
-									{% endif %}
-
-								<!-- Заголовок для десктопа -->
-								<h4 class="mb-2 exercise-title-desktop">{{ item.exercise.name }}</h4>
-
-								<!-- Медиа (гифка/видео) -->
-								{% with gif=item.exercise.get_gif %}
-									{% if gif %}
-										<div class="exercise-media-wrapper">
-											{% if '.mp4' in gif or 'video' in gif %}
-												<video autoplay loop muted playsinline class="exercise-media-img">
-													<source src="{{ gif }}" type="video/mp4">
-												</video>
-											{% else %}
-												<img src="{{ gif }}" alt="{{ item.exercise.name }}"
-												     class="exercise-media-img">
-											{% endif %}
-										</div>
-									{% endif %}
-								{% endwith %}
-							</div>
-
-							<div class="exercise-info">
-								<!-- Заголовок для мобильных -->
-								<h4 class="mb-2 exercise-title-mobile">{{ item.exercise.name }}</h4>
-
-								<div class="exercise-stats">
-									<div class="stat-item">
-										<i class="fas fa-layer-group"></i>
-										<span class="stat-number">{{ item.sets }}</span>
-										<span class="stat-text">подходов</span>
-									</div>
-									<div class="stat-item">
-										<i class="fas fa-redo"></i>
-										<span class="stat-number">{{ item.reps }}</span>
-										<span class="stat-text">повторений</span>
-									</div>
-								</div>
-
-								<!-- Веса списком -->
-								{% if item.is_dropset %}
-									<!-- Дроп-сет: показываем прогрессию весов -->
-									<div class="weights-list">
-										<h5 class="weights-list-title"><i class="fas fa-fire"></i> Дроп-сет прогрессия:</h5>
-										<div class="dropset-progression">
-											{% for set_info in item.get_dropset_display %}
-												<div class="dropset-set">{{ set_info }}</div>
-											{% endfor %}
-										</div>
-									</div>
-								{% else %}
-									<!-- Обычное упражнение: обычные веса -->
-									<div class="weights-list">
-										<h5 class="weights-list-title"><i class="fas fa-weight-hanging"></i> Веса:</h5>
-										<div class="weights-items">
-											{% for weight in item.get_weights_display %}
-												<span class="weight-item">{{ forloop.counter }}×{{ weight|floatformat:"-1" }}кг</span>
-											{% endfor %}
-										</div>
-									</div>
-								{% endif %}
+							<div class="exercise-card-actions">
+								<a href="{% url 'edit-exercise' item.pk %}" class="action-btn btn-edit">
+									<i class="fas fa-edit"></i>
+									<span>Изменить</span>
+								</a>
+								<button onclick="deleteExercise({{ item.pk }}, '{{ item.exercise.name|escapejs }}')" class="action-btn btn-delete">
+									<i class="fas fa-trash"></i>
+									<span>Удалить</span>
+								</button>
 							</div>
 						</div>
 					{% endfor %}
@@ -217,4 +245,8 @@
 			</div>
 		{% endif %}
 	</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/workout_detail.js' %}"></script>
 {% endblock %}

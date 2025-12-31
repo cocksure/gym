@@ -163,6 +163,74 @@
     width: 100%;
 }
 
+/* Swipe to reveal actions */
+.exercise-card-wrapper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    border-radius: var(--border-radius);
+}
+
+.exercise-card-content {
+    position: relative;
+    transition: transform 0.3s ease;
+    z-index: 2;
+    background: white;
+    border-radius: var(--border-radius);
+}
+
+.exercise-card-content .exercise-card {
+    margin-bottom: 0 !important;
+}
+
+.exercise-card-actions {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    z-index: 1;
+}
+
+.action-btn {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border: none;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    height: 100%;
+}
+
+.action-btn i {
+    font-size: 1.2rem;
+}
+
+.action-btn:active {
+    filter: brightness(0.9);
+}
+
+.btn-edit {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.exercise-card-wrapper.swiped .exercise-card-content {
+    transform: translateX(-160px);
+}
+
 /* ДЕСКТОП (большие экраны) - СЕТКА 4 КОЛОНКИ */
 @media (min-width: 1024px) {
     .exercises-list {
@@ -326,7 +394,7 @@
         width: 100%;
         gap: 1rem;
         padding: 0.75rem;
-        margin-bottom: 0.75rem;
+        margin-bottom: 0;
         align-items: stretch;
         min-height: 160px; /* Увеличили высоту для большего GIF */
     }

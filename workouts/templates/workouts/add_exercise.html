@@ -12,8 +12,13 @@
     <div class="card header-compact">
         <div class="d-flex justify-between align-center">
             <div>
+                {% if editing_exercise %}
+                <h2 class="mb-0"><i class="fas fa-edit"></i> Редактировать упражнение</h2>
+                <p class="text-muted mb-0">{{ editing_exercise.exercise.name }}</p>
+                {% else %}
                 <h2 class="mb-0"><i class="fas fa-plus-circle"></i> Добавить упражнение</h2>
                 <p class="text-muted mb-0"><i class="fas fa-calendar"></i> {{ workout_day.date|date:"d.m.Y" }}{% if workout_day.name %} - {{ workout_day.name }}{% endif %}</p>
+                {% endif %}
             </div>
             <a href="{% url 'workout-detail' workout_day.pk %}" class="btn btn-outline">
                 <i class="fas fa-arrow-left"></i> Назад
@@ -22,7 +27,8 @@
     </div>
 
     <div class="add-exercise-layout">
-        <!-- Список упражнений с GIF -->
+        <!-- Список упражнений с GIF (скрыт при редактировании) -->
+        {% if not editing_exercise %}
         <div class="exercises-list">
             <h3 class="mb-2"><i class="fas fa-dumbbell"></i> Выберите упражнение:</h3>
             {% for category, exercises in exercises_by_category.items %}
@@ -59,11 +65,13 @@
                 {% endif %}
             {% endfor %}
         </div>
+        {% endif %}
 
         <!-- Форма записи -->
-        <div class="form-sidebar">
-            <div class="card sticky-form hidden" id="exercise-form-card">
+        <div class="form-sidebar" {% if editing_exercise %}style="width: 100%; max-width: 600px; margin: 0 auto;"{% endif %}>
+            <div class="card sticky-form {% if not editing_exercise %}hidden{% endif %}" id="exercise-form-card">
                 <h3 class="mb-2"><i class="fas fa-edit"></i> Запись упражнения</h3>
+                {% if not editing_exercise %}
                 <div id="selected-exercise" class="selected-preview">
                     <p class="text-center" style="color: var(--gray);">
                         <i class="fas fa-hand-pointer"></i><br>
@@ -72,13 +80,17 @@
                     <h4 id="selected-name" class="hidden"></h4>
                     <div id="selected-media"></div>
                 </div>
+                {% endif %}
                 <form method="post" id="exercise-form">
                     {% csrf_token %}
+                    {% if not editing_exercise %}
                     <input type="hidden" name="exercise" id="exercise-id" required>
                     {% if superset_group %}
                         <input type="hidden" name="superset_group" value="{{ superset_group }}">
                     {% endif %}
+                    {% endif %}
 
+                    {% if not editing_exercise %}
                     <div class="form-group">
                         <label class="form-label"><i class="fas fa-fire"></i> Тип упражнения:</label>
                         {% if superset_group %}
@@ -102,14 +114,15 @@
                             </small>
                         {% endif %}
                     </div>
+                    {% endif %}
 
                     <div class="form-group">
                         <label class="form-label"><i class="fas fa-layer-group"></i> Подходы:</label>
-                        <input type="number" name="sets" id="id_sets" class="form-control" min="1" value="3" required>
+                        <input type="number" name="sets" id="id_sets" class="form-control" min="1" value="{% if editing_exercise %}{{ editing_exercise.sets }}{% else %}3{% endif %}" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label"><i class="fas fa-redo"></i> Повторения:</label>
-                        <input type="number" name="reps" id="id_reps" class="form-control" min="1" value="10" required>
+                        <input type="number" name="reps" id="id_reps" class="form-control" min="1" value="{% if editing_exercise %}{{ editing_exercise.reps }}{% else %}10{% endif %}" required>
                     </div>
                     <div class="form-group" id="weights-container">
                         <label class="form-label">
@@ -123,11 +136,17 @@
                         </small>
                     </div>
                     <button type="submit" class="btn btn-success w-100 mb-2">
+                        {% if editing_exercise %}
+                        <i class="fas fa-save"></i> Сохранить изменения
+                        {% else %}
                         <i class="fas fa-check"></i> Добавить упражнение
+                        {% endif %}
                     </button>
+                    {% if not editing_exercise %}
                     <a href="{% url 'workout-detail' workout_day.pk %}" class="btn btn-primary w-100">
                         <i class="fas fa-flag-checkered"></i> Завершить тренировку
                     </a>
+                    {% endif %}
                 </form>
             </div>
         </div>
@@ -137,4 +156,18 @@
 
 {% block extra_js %}
 <script src="{% static 'js/add_exercise.js' %}"></script>
+{% if editing_exercise %}
+<script>
+// Данные для редактирования
+window.editingExerciseData = {
+    type: '{{ editing_exercise.exercise_type }}',
+    sets: {{ editing_exercise.sets }},
+    {% if editing_exercise.exercise_type == 'DROPSET' %}
+    weights: {{ editing_exercise.dropset_weights|safe }}
+    {% else %}
+    weights: {{ editing_exercise.get_weights_display|safe }}
+    {% endif %}
+};
+</script>
+{% endif %}
 {% endblock %}
