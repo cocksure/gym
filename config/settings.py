@@ -83,11 +83,16 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+if DEBUG:
+    # Настройки для разработки
+    STATICFILES_DIRS = [BASE_DIR / 'static']
+    # В DEBUG режиме staticfiles будет работать без collectstatic
+    STATIC_ROOT = BASE_DIR / 'staticfiles'  # отдельная папка для collectstatic (если понадобится)
+else:
+    # Настройки для продакшена
+    STATICFILES_DIRS = []
+    STATIC_ROOT = BASE_DIR / 'static'
 
 # Media files (загруженные пользователем файлы)
 MEDIA_URL = '/media/'
