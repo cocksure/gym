@@ -32,12 +32,12 @@
                 <li><a href="{% url 'workout-list' %}" class="workout-nav-link {% if request.resolver_match.url_name == 'workout-list' %}active{% endif %}">
                     <i class="fas fa-calendar-alt"></i> Тренировки
                 </a></li>
-                <li><a href="{% url 'create-workout' %}" class="{% if request.resolver_match.url_name == 'create-workout' %}active{% endif %}">
-                    <i class="fas fa-plus-circle"></i> Новая
-                </a></li>
-                <li class="user-info">
-                    <span class="username"><i class="fas fa-user"></i> {{ user.username }}</span>
-                </li>
+{#                <li><a href="{% url 'create-workout' %}" class="{% if request.resolver_match.url_name == 'create-workout' %}active{% endif %}">#}
+{#                    <i class="fas fa-plus-circle"></i> Новая#}
+{#                </a></li>#}
+{#                <li class="user-info">#}
+{#                    <span class="username"><i class="fas fa-user"></i> {{ user.username }}</span>#}
+{#                </li>#}
                 <li><a href="{% url 'logout' %}" class="btn-logout">
                     <i class="fas fa-sign-out-alt"></i> Выход
                 </a></li>
