@@ -11,7 +11,7 @@
     background: white;
     padding: 1.25rem;
     border-radius: var(--border-radius);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.15);
     transition: all 0.3s ease;
     border: 2px solid transparent;
     position: relative;
@@ -30,20 +30,20 @@
 
 .category-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.25);
+    box-shadow: 0 10px 30px rgba(255, 107, 53, 0.25);
     border-color: var(--primary);
 }
 
 .category-icon {
-    font-size: 2rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 158, 109, 0.1) 100%);
     border-radius: 12px;
-    color: var(--primary);
+    /*color: var(--primary);*/
 }
 
 .category-card .card-header {

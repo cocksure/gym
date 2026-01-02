@@ -11,7 +11,7 @@
     display: flex;
     align-items: center;
     padding: 0.75rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 158, 109, 0.05) 100%);
     border: 2px solid transparent;
     border-radius: 8px;
     cursor: pointer;
@@ -20,7 +20,7 @@
 
 .category-checkbox:hover {
     border-color: var(--primary);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(255, 158, 109, 0.1) 100%);
 }
 
 .category-checkbox input[type="checkbox"] {
@@ -38,7 +38,7 @@
 
 .category-checkbox:has(input:checked) {
     border-color: var(--primary);
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.15) 0%, rgba(255, 158, 109, 0.15) 100%);
 }
 
 .checkbox-label {

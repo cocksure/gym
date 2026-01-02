@@ -1,7 +1,7 @@
 /* Workout Detail Specific Styles */
 
 .workout-header {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.03) 0%, rgba(118, 75, 162, 0.03) 100%);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.03) 0%, rgba(255, 158, 109, 0.03) 100%);
 }
 
 /* Exercise Type Badges */
@@ -147,7 +147,7 @@
 }
 
 .workout-notes {
-    background: rgba(102, 126, 234, 0.05);
+    background: rgba(255, 107, 53, 0.05);
     padding: 1rem;
     border-radius: 8px;
     border-left: 4px solid var(--primary);
@@ -322,7 +322,7 @@
     }
 
     .stat-item {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 158, 109, 0.05) 100%);
         padding: 0.4rem 0.2rem;
         border-radius: 6px;
         text-align: center;
@@ -351,7 +351,7 @@
 
     /* Weights List Styles */
     .weights-list {
-        border-top: 1px solid rgba(102, 126, 234, 0.15);
+        border-top: 1px solid rgba(255, 107, 53, 0.15);
         padding-top: 0.4rem;
     }
 
@@ -372,12 +372,12 @@
         display: inline-flex;
         align-items: center;
         padding: 0.2rem 0.4rem;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(255, 158, 109, 0.08) 100%);
         border-radius: 4px;
         font-size: 0.7rem;
         font-weight: 600;
         color: var(--primary);
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        border: 1px solid rgba(255, 107, 53, 0.2);
     }
 
     /* Дроп-сет прогрессия */
@@ -475,7 +475,7 @@
     }
 
     .stat-item {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 158, 109, 0.05) 100%);
         padding: 0.4rem 0.25rem;
         border-radius: 5px;
         text-align: center;
@@ -517,12 +517,12 @@
     .weight-item {
         text-align: center;
         padding: 0.2rem 0.3rem;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(255, 158, 109, 0.08) 100%);
         border-radius: 3px;
         font-size: 0.7rem;
         font-weight: 600;
         color: var(--primary);
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        border: 1px solid rgba(255, 107, 53, 0.2);
     }
 }
 
@@ -610,7 +610,7 @@
     }
 
     .stat-item {
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 158, 109, 0.05) 100%);
         padding: 0.3rem 0.15rem;
         border-radius: 4px;
         text-align: center;
@@ -653,12 +653,12 @@
     .weight-item {
         text-align: center;
         padding: 0.15rem 0.2rem;
-        background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+        background: linear-gradient(135deg, rgba(255, 107, 53, 0.08) 0%, rgba(255, 158, 109, 0.08) 100%);
         border-radius: 3px;
         font-size: 0.65rem;
         font-weight: 600;
         color: var(--primary);
-        border: 1px solid rgba(102, 126, 234, 0.2);
+        border: 1px solid rgba(255, 107, 53, 0.2);
     }
 }
 

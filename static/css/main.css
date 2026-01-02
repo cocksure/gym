@@ -6,23 +6,104 @@
 }
 
 :root {
-    --primary: #667eea;
-    --primary-dark: #5568d3;
-    --secondary: #764ba2;
-    --accent-1: #667eea;
-    --accent-2: #764ba2;
-    --success: #10b981;
-    --danger: #ef4444;
-    --light: #f9fafb;
-    --dark: #1f2937;
-    --gray: #6b7280;
-    --gray-light: #e5e7eb;
+    /* ========== ОСНОВНАЯ ПАЛИТРА (НОВАЯ) ========== */
+    --energy: #FF6B35;              /* Основной акцент - энергия, действие */
+    --fresh: #00B4D8;               /* Вторичный - свежесть, вода */
+    --growth: #06D6A0;              /* Успех - рост, прогресс */
+    --gold: #FFD166;                /* Достижения - золото, награды */
+    --coral: #EF476F;               /* Опасность/предупреждение */
+
+    /* ========== СОВМЕСТИМОСТЬ С СУЩЕСТВУЮЩИМ КОДОМ ========== */
+    /* Основные цвета (заменяем старые на новые) */
+    --primary: #FF6B35;             /* Было: #667eea - теперь оранжевый */
+    --primary-dark: #E55A2B;        /* Темнее на 10% */
+    --secondary: #00B4D8;           /* Было: #764ba2 - теперь бирюзовый */
+
+    /* Акценты (сохраняем структуру) */
+    --accent-1: #FF6B35;            /* Как primary */
+    --accent-2: #00B4D8;            /* Как secondary */
+
+    /* Семантические цвета (обновляем оттенки) */
+    --success: #06D6A0;             /* Было: #10b981 - ярче, современнее */
+    --danger: #EF476F;              /* Было: #ef4444 - коралловый вместо красного */
+    --warning: #FFD166;             /* Новое: золотой для предупреждений */
+    --info: #118AB2;                /* Новое: информационные сообщения */
+
+    /* Нейтральные (можно оставить или слегка подкорректировать) */
+    --light: #F8F9FA;               /* Светлый фон */
+    --dark: #1A1A1D;                /* Было: #1f2937 - глубже, контрастнее */
+    --gray: #6C757D;                /* Средний серый */
+    --gray-light: #E9ECEF;          /* Светло-серый */
+
+    /* ========== ГРАДИЕНТЫ (ОБНОВЛЕННЫЕ) ========== */
     --border-radius: 16px;
-    --shadow: 0 4px 16px rgba(102, 126, 234, 0.08);
-    --shadow-hover: 0 8px 32px rgba(102, 126, 234, 0.16);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%), radial-gradient(circle at 10% 20%, rgba(255,255,255,0.1) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(255,255,255,0.1) 0%, transparent 40%);
-    --gradient-secondary: linear-gradient(135deg, #5568d3 0%, #667eea 100%), radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 50%);
+
+    /* Основной градиент: Огонь (энергия) */
+    --gradient-primary: linear-gradient(
+        135deg,
+        #FF6B35 0%,
+        #FF9E6D 100%
+    ), radial-gradient(
+        circle at 10% 20%,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 40%
+    ), radial-gradient(
+        circle at 90% 80%,
+        rgba(255, 107, 53, 0.1) 0%,
+        transparent 40%
+    );
+
+    /* Вторичный градиент: Обратный огонь */
+    --gradient-secondary: linear-gradient(
+        135deg,
+        #FF9E6D 0%,
+        #FF6B35 100%
+    ), radial-gradient(
+        circle at 50% 50%,
+        rgba(255, 107, 53, 0.1) 0%,
+        transparent 50%
+    );
+
+    /* Градиент успеха: Рост */
+    --gradient-success: linear-gradient(
+        135deg,
+        #06D6A0 0%,
+        #83E8BA 100%
+    );
+
+    /* Градиент для опасных действий */
+    --gradient-danger: linear-gradient(
+        135deg,
+        #EF476F 0%,
+        #F8839C 100%
+    );
+
+    /* ========== ТЕНИ (ОБНОВЛЕННЫЕ С ЦВЕТНЫМ ОТТЕНКОМ) ========== */
+    --shadow: 0 4px 16px rgba(255, 107, 53, 0.08);
+    --shadow-hover: 0 8px 32px rgba(255, 107, 53, 0.16);
+
+    /* Цветные тени для разных состояний */
+    --shadow-success: 0 4px 16px rgba(6, 214, 160, 0.12);
+    --shadow-danger: 0 4px 16px rgba(239, 71, 111, 0.12);
+    --shadow-info: 0 4px 16px rgba(0, 180, 216, 0.12);
+
+    /* ========== ДОПОЛНИТЕЛЬНЫЕ ПЕРЕМЕННЫЕ ========== */
+    /* Для более тонкого контроля */
+    --energy-light: #FF9E6D;
+    --energy-lighter: #FFD1B3;
+    --fresh-light: #48CAE4;
+    --fresh-lighter: #A6E9F4;
+    --growth-light: #83E8BA;
+    --growth-lighter: #C2F5E0;
+
+    /* Темная тема (заготовка) */
+    --dark-bg: #0F1419;
+    --dark-card: #1E252B;
+    --dark-text: #E6E9EF;
+
+    /* Для анимаций */
+    --pulse-glow: 0 0 20px rgba(255, 107, 53, 0.4);
 }
 
 body {
@@ -30,9 +111,9 @@ body {
     line-height: 1.6;
     color: var(--dark);
     background:
-        linear-gradient(135deg, #f0f4ff 0%, #e6e9ff 50%, #dcd6ff 100%),
-        radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+        linear-gradient(135deg, #fff8f3 0%, #ffe9db 50%, #ffd9c0 100%),
+        radial-gradient(circle at 20% 30%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 158, 109, 0.05) 0%, transparent 50%);
     min-height: 100vh;
 }
 
@@ -44,7 +125,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 20px rgba(255, 107, 53, 0.3);
     backdrop-filter: blur(10px);
 }
 
@@ -181,7 +262,7 @@ body {
     box-shadow: var(--shadow);
     transition: var(--transition);
     margin-bottom: 1rem;
-    border: 1px solid rgba(102, 126, 234, 0.08);
+    border: 1px solid rgba(255, 107, 53, 0.08);
 }
 
 .card:hover {
@@ -217,13 +298,13 @@ body {
 .btn-primary {
     background: var(--gradient-primary);
     color: white;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
 }
 
 .btn-primary:hover {
     background: var(--gradient-secondary);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
 }
 
 .btn-success {
@@ -298,7 +379,7 @@ body {
 .form-control:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
 }
 
 .form-text {
@@ -354,9 +435,9 @@ body {
 .stat-card {
     text-align: center;
     padding: 1rem;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.05) 0%, rgba(255, 158, 109, 0.05) 100%);
     border-radius: 12px;
-    border: 1px solid rgba(102, 126, 234, 0.1);
+    border: 1px solid rgba(255, 107, 53, 0.1);
 }
 
 .stat-value {
