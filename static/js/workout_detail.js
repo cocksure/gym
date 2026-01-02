@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function handleTouchStart(e) {
             startX = e.touches[0].clientX;
+            currentX = e.touches[0].clientX; // Initialize currentX
             isDragging = true;
         }
 
@@ -31,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currentX = e.touches[0].clientX;
             const diff = currentX - startX;
 
-            // Only allow swiping left
-            if (diff < 0 && diff > -160) {
+            // Only allow swiping left and only if moved more than 5px
+            if (diff < -5 && diff > -160) {
                 e.preventDefault();
                 content.style.transition = 'none';
                 content.style.transform = `translateX(${diff}px)`;
@@ -46,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const diff = currentX - startX;
             content.style.transition = 'transform 0.3s ease';
 
-            // If swiped more than 80px, reveal actions
-            if (diff < -80) {
+            // Only reveal actions if it was actually a swipe (moved more than 10px) and swiped more than 80px
+            if (Math.abs(diff) > 10 && diff < -80) {
                 wrapper.classList.add('swiped');
                 content.style.transform = '';
             } else {
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         function handleMouseDown(e) {
             startX = e.clientX;
+            currentX = e.clientX; // Initialize currentX
             isDragging = true;
             e.preventDefault();
         }
@@ -71,8 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
             currentX = e.clientX;
             const diff = currentX - startX;
 
-            // Only allow swiping left
-            if (diff < 0 && diff > -160) {
+            // Only allow swiping left and only if moved more than 5px
+            if (diff < -5 && diff > -160) {
                 content.style.transition = 'none';
                 content.style.transform = `translateX(${diff}px)`;
             }
@@ -85,8 +87,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const diff = currentX - startX;
             content.style.transition = 'transform 0.3s ease';
 
-            // If swiped more than 80px, reveal actions
-            if (diff < -80) {
+            // Only reveal actions if it was actually a swipe (moved more than 10px) and swiped more than 80px
+            if (Math.abs(diff) > 10 && diff < -80) {
                 wrapper.classList.add('swiped');
                 content.style.transform = '';
             } else {

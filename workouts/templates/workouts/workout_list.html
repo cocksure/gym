@@ -9,14 +9,25 @@
 
 {% block content %}
 <div class="fade-in">
-    <h1 class="mb-2"><i class="fas fa-dumbbell"></i> Мои тренировки</h1>
+    <div class="page-header">
+        <h1 class="mb-2">
+            <i class="fas fa-dumbbell workout-icon-pulse"></i> Мои тренировки
+        </h1>
+        <p class="motivation-text">Превращай пот в силу! Каждая тренировка — шаг к твоей цели!</p>
+    </div>
 
     <div class="stats-grid">
-        <div class="stat-card">
+        <div class="stat-card stat-card-workouts">
+            <div class="stat-icon">
+                <i class="fas fa-fire"></i>
+            </div>
             <div class="stat-value">{{ workouts.count }}</div>
             <div class="stat-label">Всего тренировок</div>
         </div>
-        <div class="stat-card">
+        <div class="stat-card stat-card-exercises">
+            <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
             <div class="stat-value">
                 {% with total_exercises=workouts|length %}
                     {{ total_exercises }}
@@ -40,7 +51,7 @@
                     <h3 class="workout-name-title">{{ workout.name }}</h3>
                     {% endif %}
                     <p class="workout-date">
-                        <i class="fas fa-calendar-day"></i> {{ workout.date|date:"d.m.Y" }}
+                        <i class="fas fa-calendar-day"></i> {{ workout.date|date:"j E Y" }}
                     </p>
                 </div>
 
@@ -59,6 +70,34 @@
         </div>
         {% endfor %}
     </div>
+
+    {% if is_paginated %}
+    <div class="pagination-container">
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="pagination-btn">
+                <i class="fas fa-angle-double-left"></i>
+            </a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="pagination-btn">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            {% endif %}
+
+            <span class="pagination-info">
+                Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="pagination-btn">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="pagination-btn">
+                <i class="fas fa-angle-double-right"></i>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
     {% else %}
     <div class="empty-state">
         <i class="fas fa-dumbbell"></i>

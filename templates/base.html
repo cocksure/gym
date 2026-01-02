@@ -29,7 +29,7 @@
                 <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
                     <i class="fas fa-home"></i> Главная
                 </a></li>
-                <li><a href="{% url 'workout-list' %}" class="{% if request.resolver_match.url_name == 'workout-list' %}active{% endif %}">
+                <li><a href="{% url 'workout-list' %}" class="workout-nav-link {% if request.resolver_match.url_name == 'workout-list' %}active{% endif %}">
                     <i class="fas fa-calendar-alt"></i> Тренировки
                 </a></li>
                 <li><a href="{% url 'create-workout' %}" class="{% if request.resolver_match.url_name == 'create-workout' %}active{% endif %}">

@@ -41,6 +41,7 @@ class WorkoutDayListView(LoginRequiredMixin, ListView):
     template_name = 'workouts/workout_list.html'
     context_object_name = 'workouts'
     ordering = ['-date']
+    paginate_by = 25
 
     def get_queryset(self):
         return WorkoutDay.objects.filter(user=self.request.user).order_by('-date')
