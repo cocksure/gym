@@ -78,39 +78,39 @@
             {% endwith %}
 
             <!-- Детали упражнения -->
-            <div class="exercise-details">
-                <div class="d-flex gap-2 mb-2">
-                    {% if exercise.muscle_group %}
-                    <span class="exercise-tag">
-                        <i class="fas fa-muscle"></i> {{ exercise.muscle_group }}
-                    </span>
-                    {% endif %}
-
-                    {% if exercise.difficulty %}
-                    <span class="exercise-tag" style="background:
-                        {% if exercise.difficulty == 'beginner' %}#4cc9f0
-                        {% elif exercise.difficulty == 'intermediate' %}#f8961e
-                        {% elif exercise.difficulty == 'advanced' %}#f72585
-                        {% else %}#6c757d{% endif %};">
-                        <i class="fas fa-signal"></i> {{ exercise.get_difficulty_display|default:"-" }}
-                    </span>
-                    {% endif %}
-                </div>
-
-                <div class="mb-2">
-                    <p class="mb-1"><strong><i class="fas fa-tools"></i> Оборудование:</strong></p>
-                    <p class="exercise-equipment">
-                        {{ exercise.equipment|default:"Не требуется" }}
-                    </p>
-                </div>
-
-                {% if exercise.description %}
-                <div class="mb-2">
-                    <p class="mb-1"><strong><i class="fas fa-align-left"></i> Описание:</strong></p>
-                    <p class="exercise-description">{{ exercise.description|truncatewords:20 }}</p>
-                </div>
-                {% endif %}
-            </div>
+{#            <div class="exercise-details">#}
+{#                <div class="d-flex gap-2 mb-2">#}
+{#                    {% if exercise.muscle_group %}#}
+{#                    <span class="exercise-tag">#}
+{#                        <i class="fas fa-muscle"></i> {{ exercise.muscle_group }}#}
+{#                    </span>#}
+{#                    {% endif %}#}
+{##}
+{#                    {% if exercise.difficulty %}#}
+{#                    <span class="exercise-tag" style="background:#}
+{#                        {% if exercise.difficulty == 'beginner' %}#4cc9f0#}
+{#                        {% elif exercise.difficulty == 'intermediate' %}#f8961e#}
+{#                        {% elif exercise.difficulty == 'advanced' %}#f72585#}
+{#                        {% else %}#6c757d{% endif %};">#}
+{#                        <i class="fas fa-signal"></i> {{ exercise.get_difficulty_display|default:"-" }}#}
+{#                    </span>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{##}
+{#                <div class="mb-2">#}
+{#                    <p class="mb-1"><strong><i class="fas fa-tools"></i> Оборудование:</strong></p>#}
+{#                    <p class="exercise-equipment">#}
+{#                        {{ exercise.equipment|default:"Не требуется" }}#}
+{#                    </p>#}
+{#                </div>#}
+{##}
+{#                {% if exercise.description %}#}
+{#                <div class="mb-2">#}
+{#                    <p class="mb-1"><strong><i class="fas fa-align-left"></i> Описание:</strong></p>#}
+{#                    <p class="exercise-description">{{ exercise.description|truncatewords:20 }}</p>#}
+{#                </div>#}
+{#                {% endif %}#}
+{#            </div>#}
 
         </div>
         {% endfor %}
